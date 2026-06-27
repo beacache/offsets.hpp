@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <functional>
 
-// yes i steal this design from macos executor "vylkyrie"
+// yes i steal this design from 'vylkyrie'
 
 template <typename T>
 class offset_t {
@@ -38,7 +38,7 @@ namespace module::update {
     };
 
     namespace output {
-        enum message_type_t : std::int32_t { stand, INFORMATION, WARNING, ERR };
+        enum message_type_t : std::int32_t { STANDARD, INFORMATION, WARNING, ERR };
         using rbx_print_t = void(__fastcall*)(message_type_t message_type, const char* format, ...);
 
         const auto print = rebase<rbx_print_t>(0x1e6b8e0);
@@ -60,13 +60,10 @@ namespace module::update {
         const auto task_defer = rebase<luac_function_t>(0x1e2d420);
 
         const auto lua_vm_load = rebase<lua_vm_load_t>(0x1d06510);
-
         const auto opcode_lookup_table = rebase<std::uintptr_t>(0x61c76e0);
         const auto raw_scheduler = rebase<std::uintptr_t>(0x8179078);
-
         const auto get_lua_state_for_instance = rebase<get_lua_state_for_instance_t>(0x1cede20);
-
-        const auto get_values = rebase<get_values_t>(0x1d74ed0); // idk if this correct
+        const auto get_values = rebase<get_values_t>(0x1d74ed0);
         const auto disconnect_connection = rebase<disconnect_connection_t>(0x0); // not found
     };
 
@@ -77,7 +74,7 @@ namespace module::update {
         static auto script_context = offset_t<std::uintptr_t>(0x440);
         static auto fake_dm_to_real_dm = offset_t<std::uintptr_t>(0x1d0);
 
-        const auto fake_dm_pointer = rebase<std::uintptr_t>(0x0); // not found
+        const auto fake_dm_pointer = rebase<std::uintptr_t>(0x7be9278);
     };
 
     namespace script_context {
@@ -102,7 +99,7 @@ namespace module::update {
         using impersonator_t = std::uintptr_t(__fastcall*)(lua_State*, std::uintptr_t, std::uintptr_t*, std::int32_t);
 
         const auto get_identity_struct = rebase<get_identity_struct_t>(0x82d0);
-        const auto impersonator = rebase<impersonator_t>(0x52f83d0);
+        const auto impersonator = rebase<impersonator_t>(0x1cce250);
         const auto identity_pointer = rebase<std::uintptr_t>(0x816a140);
 
         static auto require_bypass = offset_t<std::uintptr_t>(0x0); // not found
@@ -185,12 +182,14 @@ namespace module::update {
         using fire_mouse_click_t = void(__fastcall*)(__int64, float, __int64);
         using fire_hover_t = void(__fastcall*)(__int64, __int64);
         using firetouchinterest_t = void(__fastcall*)(std::uintptr_t, std::uintptr_t, std::uintptr_t, bool, bool);
+        using cast_to_variant_t = std::uintptr_t(__fastcall*)(lua_State*, int, void*, bool, int);
 
-        const auto fire_proximity_prompt = rebase<fireproximityprompt_t>(0x0); // not found
+        const auto cast_to_variant = rebase<cast_to_variant_t>(0x0); // not found
         const auto fire_mouse_click = rebase<fire_mouse_click_t>(0x0); // not found
         const auto fire_right_mouse_click = rebase<fire_mouse_click_t>(0x0); // not found
         const auto fire_mouse_hover_enter = rebase<fire_hover_t>(0x0); // not found
         const auto fire_mouse_hover_leave = rebase<fire_hover_t>(0x0); // not found
+        const auto fire_proximity_prompt = rebase<fireproximityprompt_t>(0x2653780);
         const auto fire_touch_interest = rebase<firetouchinterest_t>(0x0); // not found
     };
 
@@ -209,7 +208,7 @@ namespace module::update {
 
         const auto dump_proto = rebase<std::uintptr_t>(0x46c8ea0);
         const auto dump_thread = rebase<std::uintptr_t>(0x46c9780);
-        const auto get_thread_data = rebase<std::uintptr_t>(0x6d7740); 
+        const auto get_thread_data = rebase<std::uintptr_t>(0x6d7740);
 
         const auto luaf_freeproto = rebase<std::uintptr_t>(0x46e10b0);
         const auto luac_step = rebase<std::uintptr_t>(0x46bac60);
@@ -219,7 +218,7 @@ namespace module::update {
         const auto lua_newstate = rebase<std::uintptr_t>(0x0); // not found
 
         const auto lual_tostring = rebase<std::uintptr_t>(0x46b7f4e);
-        const auto lua_pushstring = rebase<std::uintptr_t>(0x46b16b0);
+        const auto lua_pushstring = rebase<std::uintptr_t>(0x46b1840);
         const auto lua_setfield = rebase<std::uintptr_t>(0x46b39a0);
 
         const auto luat_typenames = rebase<std::uintptr_t>(0x6933480);
