@@ -38,7 +38,7 @@ namespace module::update {
     };
 
     namespace output {
-        enum message_type_t : std::int32_t { STANDARD, INFORMATION, WARNING, ERR };
+        enum message_type_t : std::int32_t { basic, info, warn, error };
         using rbx_print_t = void(__fastcall*)(message_type_t message_type, const char* format, ...);
 
         const auto print = rebase<rbx_print_t>(0x1e6b8e0);
@@ -63,7 +63,7 @@ namespace module::update {
         const auto opcode_lookup_table = rebase<std::uintptr_t>(0x61c76e0);
         const auto raw_scheduler = rebase<std::uintptr_t>(0x8179078);
         const auto get_lua_state_for_instance = rebase<get_lua_state_for_instance_t>(0x1cede20);
-        const auto get_values = rebase<get_values_t>(0x1d74ed0);
+        const auto get_values = rebase<get_values_t>(0x1d74ed0);  // idk if this correct
         const auto disconnect_connection = rebase<disconnect_connection_t>(0x0); // not found
     };
 
@@ -142,15 +142,15 @@ namespace module::update {
 
         const auto new_instance = rebase<new_instance_t>(0xac4a30);
 
+        static auto class_name = offset_t<std::string>(0x8);
+        static auto scriptable_mask = offset_t<std::uint32_t>(0x10);
         static auto class_descriptor = offset_t<std::uintptr_t>(0x18);
+        static auto prop_descriptor = offset_t<std::uintptr_t>(0x28);
         static auto parent = offset_t<std::uintptr_t>(0x70);
         static auto children = offset_t<std::uintptr_t>(0x78);
         static auto primitive = offset_t<std::uintptr_t>(0x148);
         static auto overlap = offset_t<std::uintptr_t>(0x1f0);
         static auto bit_flags = offset_t<std::uint32_t>(0x8c);
-        static auto scriptable_mask = offset_t<std::uint32_t>(0x10);
-        static auto class_name = offset_t<std::string>(0x8);
-        static auto prop_descriptor = offset_t<std::uintptr_t>(0x28);
     };
 
     namespace class_descriptor {
@@ -172,7 +172,7 @@ namespace module::update {
         const auto lock_violation_script_crash = rebase<std::uintptr_t>(0x7cfd018);
         const auto wnd_process_check = rebase<std::uintptr_t>(0x778e008);
         const auto lua_step_interval_ms_override_enabled = rebase<std::uintptr_t>(0x7cff008);
-        const auto get_fast_flag = rebase<std::uintptr_t>(0x53007d0);
+        const auto get_fast_flag = rebase<std::uintptr_t>(0x53007d0);  // idk if this correct
         const auto set_fast_flag = rebase<std::uintptr_t>(0x0); // not found
         const auto task_scheduler_target_fps = rebase<std::uintptr_t>(0x0); // not found
     };
@@ -202,6 +202,8 @@ namespace module::update {
         const auto task_desynchronize = rebase<luac_function_t>(0x1e2da60);
 
         const auto lual_argerror = rebase<std::uintptr_t>(0x46b70c0);
+        const auto lual_error = rebase<std::uintptr_t>(0x46b7710);
+        const auto lua_gettop = rebase<std::uintptr_t>(0x2de35c0);
         const auto lua_yield = rebase<std::uintptr_t>(0x46b65a0);
         const auto lua_concat = rebase<std::uintptr_t>(0x46b9010);
         const auto lua_pcall = rebase<std::uintptr_t>(0x46b3df0);
