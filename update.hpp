@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <functional>
 
+#include <encs.h>
+// dumped by sc(@k1ci0)
 // yes i steal this design from 'vylkyrie'
 
 template <typename T>
@@ -52,8 +54,8 @@ namespace module::update {
         using get_values_t = void(__fastcall*)(lua_State*, std::int32_t, void*, bool, std::int32_t);
         using disconnect_connection_t = void(__fastcall*)(std::uintptr_t*);
 
-        const auto nil_object = rebase<std::uintptr_t>(0x69336f0);
-        const auto dummy_node = rebase<std::uintptr_t>(0x6933598);
+        const auto luao_nilobject = rebase<std::uintptr_t>(0x69336f0);
+        const auto luah_dummynode = rebase<std::uintptr_t>(0x6933598);
 
         const auto luau_execute = rebase<luau_execute_t>(0x46c8a40);
         const auto luad_throw = rebase<luad_throw_t>(0x46b6310);
@@ -61,9 +63,8 @@ namespace module::update {
 
         const auto lua_vm_load = rebase<lua_vm_load_t>(0x1d06510);
         const auto opcode_lookup_table = rebase<std::uintptr_t>(0x61c76e0);
-        const auto raw_scheduler = rebase<std::uintptr_t>(0x8179078);
         const auto get_lua_state_for_instance = rebase<get_lua_state_for_instance_t>(0x1cede20);
-        const auto get_values = rebase<get_values_t>(0x1d74ed0);  // idk if this correct
+        const auto get_values = rebase<get_values_t>(0x1d74ed0);
         const auto disconnect_connection = rebase<disconnect_connection_t>(0x0); // not found
     };
 
@@ -94,10 +95,21 @@ namespace module::update {
         static auto resume_offset = offset_t<std::uintptr_t>(0x800);
     };
 
+    namespace task_scheduler {
+        const auto pointer = rebase<std::uintptr_t>(0x8179078);
+
+        static auto job_start = offset_t<std::uintptr_t>(0xc8);
+        static auto job_end = offset_t<std::uintptr_t>(0xd0);
+    };
+
     namespace extra_space {
         using get_identity_struct_t = std::uintptr_t(__fastcall*)(std::uintptr_t identity_pointer);
         using impersonator_t = std::uintptr_t(__fastcall*)(lua_State*, std::uintptr_t, std::uintptr_t*, std::int32_t);
+        using check_parallel_t = std::uintptr_t(__fastcall*)(std::uintptr_t extraspace);
+        using get_capabilities_t = std::uintptr_t(__fastcall*)(std::uintptr_t);
 
+        const auto check_parallel = rebase<check_parallel_t>(0x46b8640);
+        const auto get_capabilities = rebase<get_capabilities_t>(0x0); // not found
         const auto get_identity_struct = rebase<get_identity_struct_t>(0x82d0);
         const auto impersonator = rebase<impersonator_t>(0x1cce250);
         const auto identity_pointer = rebase<std::uintptr_t>(0x816a140);
@@ -132,16 +144,13 @@ namespace module::update {
 
         const auto shared = rebase<push_instance_shared_ptr_t>(0x1ce0cc0);
         const auto weak = rebase<push_instance_weak_ptr_t>(0x1ce0cc0);
+        const auto weak_uptr = rebase<push_instance_weak_t>(0x1ce0cc0);
         const auto uint_ptr = rebase<push_instance_uint_ptr_t>(0x1ce0cc0);
         const auto void_ptr = rebase<push_instance_void_ptr_t>(0x1ce0cc0);
         const auto void_ptr2 = rebase<push_instance_void_ptr2_t>(0x1ce0cc0);
     };
 
     namespace instance {
-        using new_instance_t = std::uintptr_t(__fastcall*)(std::uintptr_t lookup);
-
-        const auto new_instance = rebase<new_instance_t>(0xac4a30);
-
         static auto class_name = offset_t<std::string>(0x8);
         static auto scriptable_mask = offset_t<std::uint32_t>(0x10);
         static auto class_descriptor = offset_t<std::uintptr_t>(0x18);
@@ -172,9 +181,9 @@ namespace module::update {
         const auto lock_violation_script_crash = rebase<std::uintptr_t>(0x7cfd018);
         const auto wnd_process_check = rebase<std::uintptr_t>(0x778e008);
         const auto lua_step_interval_ms_override_enabled = rebase<std::uintptr_t>(0x7cff008);
-        const auto get_fast_flag = rebase<std::uintptr_t>(0x53007d0);  // idk if this correct
+        const auto get_fast_flag = rebase<std::uintptr_t>(0x53007d0);
         const auto set_fast_flag = rebase<std::uintptr_t>(0x0); // not found
-        const auto task_scheduler_target_fps = rebase<std::uintptr_t>(0x0); // not found
+        const auto task_scheduler_target_fps = rebase<std::uintptr_t>(0x493dfe0);
     };
 
     namespace signals {
@@ -190,7 +199,7 @@ namespace module::update {
         const auto fire_mouse_hover_enter = rebase<fire_hover_t>(0x0); // not found
         const auto fire_mouse_hover_leave = rebase<fire_hover_t>(0x0); // not found
         const auto fire_proximity_prompt = rebase<fireproximityprompt_t>(0x2653780);
-        const auto fire_touch_interest = rebase<firetouchinterest_t>(0x0); // not found
+        const auto fire_touch_interest = rebase<firetouchinterest_t>(0x2a50730);
     };
 
     namespace functions { // idk if this correct
@@ -201,34 +210,19 @@ namespace module::update {
         const auto task_synchronize = rebase<luac_function_t>(0x1e2e480);
         const auto task_desynchronize = rebase<luac_function_t>(0x1e2da60);
 
-        const auto lual_argerror = rebase<std::uintptr_t>(0x46b70c0);
-        const auto lual_error = rebase<std::uintptr_t>(0x46b7710);
-        const auto lua_gettop = rebase<std::uintptr_t>(0x2de35c0);
-        const auto lua_yield = rebase<std::uintptr_t>(0x46b65a0);
-        const auto lua_concat = rebase<std::uintptr_t>(0x46b9010);
         const auto lua_pcall = rebase<std::uintptr_t>(0x46b3df0);
 
         const auto dump_proto = rebase<std::uintptr_t>(0x46c8ea0);
         const auto dump_thread = rebase<std::uintptr_t>(0x46c9780);
+        const auto luaC_dump = rebase<std::uintptr_t>(0x46cabd0);
         const auto get_thread_data = rebase<std::uintptr_t>(0x6d7740);
 
         const auto luaf_freeproto = rebase<std::uintptr_t>(0x46e10b0);
         const auto luac_step = rebase<std::uintptr_t>(0x46bac60);
         const auto gcstep = rebase<std::uintptr_t>(0x46ba740);
-        const auto luau_load = rebase<std::uintptr_t>(0x46bc3e0);
-        const auto new_block = rebase<std::uintptr_t>(0x67fad0);
-        const auto lua_newstate = rebase<std::uintptr_t>(0x0); // not found
-
-        const auto lual_tostring = rebase<std::uintptr_t>(0x46b7f4e);
-        const auto lua_pushstring = rebase<std::uintptr_t>(0x46b1840);
-        const auto lua_setfield = rebase<std::uintptr_t>(0x46b39a0);
-
-        const auto luat_typenames = rebase<std::uintptr_t>(0x6933480);
-        const auto luat_eventnames = rebase<std::uintptr_t>(0x636c080);
     };
 
     namespace app_data { // idk if this correct
-        const auto info = rebase<std::uintptr_t>(0x5c86948);
-        static auto join_status = offset_t<std::uint32_t>(0x4c8);
+        const auto info = rebase<std::uintptr_t>(0x7e4f0d0);
     };
 }
