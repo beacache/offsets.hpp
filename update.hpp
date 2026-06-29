@@ -222,7 +222,10 @@ namespace module::update {
         const auto gcstep = rebase<std::uintptr_t>(0x46ba740);
     };
 
-    namespace app_data { // idk if this correct
+    namespace appdata { // idk if this correct
+        using get_appdata_info_t = void*(__fastcall*)();
+
+        const auto get_appdata_info = rebase<get_appdata_info_t>(0x3672900);
         const auto info = rebase<std::uintptr_t>(0x7e4f0d0);
     };
 }
