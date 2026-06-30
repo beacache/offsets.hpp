@@ -7,8 +7,11 @@
 #include <functional>
 
 #include <encs.h>
+
 // dumped by sc(@k1ci0)
+
 // yes i steal this design from 'vylkyrie'
+// roblox version: version-1a951716f19e4638
 
 template <typename T>
 class offset_t {
@@ -65,7 +68,7 @@ namespace module::update {
         const auto opcode_lookup_table = rebase<std::uintptr_t>(0x61c76e0);
         const auto get_lua_state_for_instance = rebase<get_lua_state_for_instance_t>(0x1cede20);
         const auto get_values = rebase<get_values_t>(0x1d74ed0);
-        const auto disconnect_connection = rebase<disconnect_connection_t>(0x0); // not found
+        const auto disconnect_connection = rebase<disconnect_connection_t>(0x1cf54a0);
     };
 
     namespace data_model {
@@ -105,10 +108,8 @@ namespace module::update {
     namespace extra_space {
         using get_identity_struct_t = std::uintptr_t(__fastcall*)(std::uintptr_t identity_pointer);
         using impersonator_t = std::uintptr_t(__fastcall*)(lua_State*, std::uintptr_t, std::uintptr_t*, std::int32_t);
-        using check_parallel_t = std::uintptr_t(__fastcall*)(std::uintptr_t extraspace);
         using get_capabilities_t = std::uintptr_t(__fastcall*)(std::uintptr_t);
 
-        const auto check_parallel = rebase<check_parallel_t>(0x46b8640);
         const auto get_capabilities = rebase<get_capabilities_t>(0x0); // not found
         const auto get_identity_struct = rebase<get_identity_struct_t>(0x82d0);
         const auto impersonator = rebase<impersonator_t>(0x1cce250);
@@ -175,6 +176,16 @@ namespace module::update {
         static auto gp_shift_amount_off = offset_t<std::uintptr_t>(0x26c);
     };
 
+    namespace raknet {
+        using process_network_packet_t = void(__fastcall*)(void*, void*, char, std::uintptr_t, std::uint32_t, char);
+        using report_network_error_t = void(__fastcall*)(std::uintptr_t, std::uint8_t*, char, std::uintptr_t, std::uint32_t, char);
+        using handle_connection_state_t = void(__fastcall*)(std::uintptr_t, char*, std::int32_t, std::uint8_t*, char);
+
+        const auto process_network_packet = rebase<process_network_packet_t>(0x3154120);
+        const auto report_network_error = rebase<report_network_error_t>(0xa4ab09);
+        const auto handle_connection_state = rebase<handle_connection_state_t>(0xa55ad0);
+    };
+    
     namespace flags {
         const auto enable_load_module = rebase<std::uintptr_t>(0x7cfff00);
         const auto lock_violation_instance_crash = rebase<std::uintptr_t>(0x7cfad18);
@@ -212,9 +223,6 @@ namespace module::update {
 
         const auto lua_pcall = rebase<std::uintptr_t>(0x46b3df0);
 
-        const auto dump_proto = rebase<std::uintptr_t>(0x46c8ea0);
-        const auto dump_thread = rebase<std::uintptr_t>(0x46c9780);
-        const auto luaC_dump = rebase<std::uintptr_t>(0x46cabd0);
         const auto get_thread_data = rebase<std::uintptr_t>(0x6d7740);
 
         const auto luaf_freeproto = rebase<std::uintptr_t>(0x46e10b0);
@@ -222,10 +230,11 @@ namespace module::update {
         const auto gcstep = rebase<std::uintptr_t>(0x46ba740);
     };
 
-    namespace appdata { // idk if this correct
+    namespace appdata {
         using get_appdata_info_t = void*(__fastcall*)();
 
-        const auto get_appdata_info = rebase<get_appdata_info_t>(0x3672900);
+        const auto get = rebase<get_appdata_info_t>(0x3672900);
         const auto info = rebase<std::uintptr_t>(0x7e4f0d0);
+        static auto app_status = offset_t<std::int32_t>(0x28);
     };
 }
