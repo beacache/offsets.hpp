@@ -110,7 +110,7 @@ namespace module::update {
         using impersonator_t = std::uintptr_t(__fastcall*)(lua_State*, std::uintptr_t, std::uintptr_t*, std::int32_t);
         using get_capabilities_t = std::uintptr_t(__fastcall*)(std::uintptr_t);
 
-        const auto get_capabilities = rebase<get_capabilities_t>(0x0); // not found
+        const auto get_capabilities = rebase<get_capabilities_t>(0x4716af0);
         const auto get_identity_struct = rebase<get_identity_struct_t>(0x82d0);
         const auto impersonator = rebase<impersonator_t>(0x1cce250);
         const auto identity_pointer = rebase<std::uintptr_t>(0x816a140);
@@ -185,7 +185,7 @@ namespace module::update {
         const auto report_network_error = rebase<report_network_error_t>(0xa4ab09);
         const auto handle_connection_state = rebase<handle_connection_state_t>(0xa55ad0);
     };
-    
+
     namespace flags {
         const auto enable_load_module = rebase<std::uintptr_t>(0x7cfff00);
         const auto lock_violation_instance_crash = rebase<std::uintptr_t>(0x7cfad18);
