@@ -9,9 +9,10 @@
 #include <encs.h>
 
 // dumped by sc(@k1ci0)
+// dumped in 147432ms (147.432s)
 
-// yes i steal this design from 'vylkyrie'
 // roblox version: version-5cf2272675e145f5
+// yes i steal this design from 'vylkyrie'
 
 template <typename T>
 class offset_t {
@@ -72,13 +73,32 @@ namespace module::update {
     };
 
     namespace data_model {
-        static auto place_id = offset_t<std::int64_t>(0x1a0); // was: 0x1a8
-        static auto game_id = offset_t<std::int64_t>(0x1a8);
+        static auto place_id = offset_t<std::int64_t>(0x180);
+        static auto game_id = offset_t<std::int64_t>(0x188);
         static auto game_loaded = offset_t<std::uintptr_t>(0x658);
         static auto script_context = offset_t<std::uintptr_t>(0x440);
         static auto fake_dm_to_real_dm = offset_t<std::uintptr_t>(0x1d0);
 
         const auto fake_dm_pointer = rebase<std::uintptr_t>(0x7c3d2e8);
+    };
+
+    namespace visual_engine {
+        const auto pointer = rebase<std::uintptr_t>(0x835a548);
+        static auto datamodel = offset_t<std::uintptr_t>(0x0); // not found
+    };
+
+    namespace instance {
+        static auto class_name = offset_t<std::string>(0x8);
+        static auto scriptable_mask = offset_t<std::uint32_t>(0x10);
+        static auto class_descriptor = offset_t<std::uintptr_t>(0x18);
+        static auto prop_descriptor = offset_t<std::uintptr_t>(0x28);
+        static auto parent = offset_t<std::uintptr_t>(0x68);
+        static auto children = offset_t<std::uintptr_t>(0x70);
+        static auto children_end = offset_t<std::uintptr_t>(0x8);
+        static auto name = offset_t<std::string>(0x98);
+        static auto primitive = offset_t<std::uintptr_t>(0x148);
+        static auto overlap = offset_t<std::uintptr_t>(0x1f0);
+        static auto bit_flags = offset_t<std::uint32_t>(0x8c);
     };
 
     namespace script_context {
@@ -151,18 +171,6 @@ namespace module::update {
         const auto void_ptr2 = rebase<push_instance_void_ptr2_t>(0x1cf6fb0);
     };
 
-    namespace instance {
-        static auto class_name = offset_t<std::string>(0x8);
-        static auto scriptable_mask = offset_t<std::uint32_t>(0x10);
-        static auto class_descriptor = offset_t<std::uintptr_t>(0x18);
-        static auto prop_descriptor = offset_t<std::uintptr_t>(0x28);
-        static auto parent = offset_t<std::uintptr_t>(0x70);
-        static auto children = offset_t<std::uintptr_t>(0x78);
-        static auto primitive = offset_t<std::uintptr_t>(0x148);
-        static auto overlap = offset_t<std::uintptr_t>(0x1f0);
-        static auto bit_flags = offset_t<std::uint32_t>(0x8c);
-    };
-
     namespace class_descriptor {
         using get_property_t = std::uintptr_t*(__thiscall*)(std::uintptr_t, std::uintptr_t*);
 
@@ -174,6 +182,7 @@ namespace module::update {
         static auto gp_prop_table_offset = offset_t<std::uintptr_t>(0x260);
         static auto gp_bucket_mask_off = offset_t<std::uintptr_t>(0x268);
         static auto gp_shift_amount_off = offset_t<std::uintptr_t>(0x26c);
+        static auto class_name_off = offset_t<std::string>(0x8);
     };
 
     namespace raknet {
@@ -213,7 +222,7 @@ namespace module::update {
         const auto fire_touch_interest = rebase<firetouchinterest_t>(0x2a806c0);
     };
 
-    namespace functions { // idk if this correct
+    namespace functions {
         const auto task_spawn = rebase<luac_function_t>(0x1e48510);
         const auto task_delay = rebase<luac_function_t>(0x1e47a20);
         const auto task_wait = rebase<luac_function_t>(0x1e48890);
@@ -231,10 +240,10 @@ namespace module::update {
     };
 
     namespace appdata {
-        using get_appdata_info_t = void*(__fastcall*)();
+        using get_appdata_info_t = uintptr_t*(__fastcall*)();
 
         const auto get = rebase<get_appdata_info_t>(0x36b0310);
         const auto info = rebase<std::uintptr_t>(0x7ea3ed0);
-        static auto app_status = offset_t<std::int32_t>(0x28);
+        static auto app_status = offset_t<std::int32_t>(0x28); /* can change */
     };
 }
