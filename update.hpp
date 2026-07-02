@@ -9,7 +9,7 @@
 #include <encs.h>
 
 // dumped by sc(@k1ci0)
-// dumped in 147432ms (147.432s)
+// dumped in 155568ms (155.568s)
 
 // roblox version: version-5cf2272675e145f5
 // yes i steal this design from 'vylkyrie'
@@ -84,7 +84,10 @@ namespace module::update {
 
     namespace visual_engine {
         const auto pointer = rebase<std::uintptr_t>(0x835a548);
-        static auto datamodel = offset_t<std::uintptr_t>(0x0); // not found
+        static auto render_view = offset_t<std::uintptr_t>(0x0); /* not found */
+        static auto view_matrix = offset_t<std::uintptr_t>(0x150);
+        static auto dimensions = offset_t<std::uintptr_t>(0x0); /* not found */
+        static auto fake_datamodel = offset_t<std::uintptr_t>(0xa90);
     };
 
     namespace instance {
@@ -135,7 +138,7 @@ namespace module::update {
         const auto impersonator = rebase<impersonator_t>(0x1ce4550);
         const auto identity_pointer = rebase<std::uintptr_t>(0x81bd8e0);
 
-        static auto require_bypass = offset_t<std::uintptr_t>(0x0); // not found
+        static auto require_bypass = offset_t<std::uintptr_t>(0x0); /* not found */
     };
 
     namespace scripts {
@@ -189,8 +192,10 @@ namespace module::update {
         using process_network_packet_t = void(__fastcall*)(void*, void*, char, std::uintptr_t, std::uint32_t, char);
         using report_network_error_t = void(__fastcall*)(std::uintptr_t, std::uint8_t*, char, std::uintptr_t, std::uint32_t, char);
         using handle_connection_state_t = void(__fastcall*)(std::uintptr_t, char*, std::int32_t, std::uint8_t*, char);
+        using raknet_send_t = __int64(__fastcall*)(__int64, const void*, int, int, int, char, __int64*, char, int, int, char, __int64);
 
         const auto process_network_packet = rebase<process_network_packet_t>(0x31919d0);
+        const auto send = rebase<raknet_send_t>(0x3192830);
         const auto report_network_error = rebase<report_network_error_t>(0xa49259);
         const auto handle_connection_state = rebase<handle_connection_state_t>(0xa54750);
     };
@@ -202,7 +207,7 @@ namespace module::update {
         const auto wnd_process_check = rebase<std::uintptr_t>(0x77e3008);
         const auto lua_step_interval_ms_override_enabled = rebase<std::uintptr_t>(0x7d53318);
         const auto get_fast_flag = rebase<std::uintptr_t>(0x534e210);
-        const auto set_fast_flag = rebase<std::uintptr_t>(0x0); // not found
+        const auto set_fast_flag = rebase<std::uintptr_t>(0x0); /* not found */
         const auto task_scheduler_target_fps = rebase<std::uintptr_t>(0x49895e0);
     };
 
@@ -213,11 +218,11 @@ namespace module::update {
         using firetouchinterest_t = void(__fastcall*)(std::uintptr_t, std::uintptr_t, std::uintptr_t, bool, bool);
         using cast_to_variant_t = std::uintptr_t(__fastcall*)(lua_State*, int, void*, bool, int);
 
-        const auto cast_to_variant = rebase<cast_to_variant_t>(0x0); // not found
-        const auto fire_mouse_click = rebase<fire_mouse_click_t>(0x0); // not found
-        const auto fire_right_mouse_click = rebase<fire_mouse_click_t>(0x0); // not found
-        const auto fire_mouse_hover_enter = rebase<fire_hover_t>(0x0); // not found
-        const auto fire_mouse_hover_leave = rebase<fire_hover_t>(0x0); // not found
+        const auto cast_to_variant = rebase<cast_to_variant_t>(0x1ce5c10);
+        const auto fire_mouse_click = rebase<fire_mouse_click_t>(0x0); /* not found */
+        const auto fire_right_mouse_click = rebase<fire_mouse_click_t>(0x0); /* not found */
+        const auto fire_mouse_hover_enter = rebase<fire_hover_t>(0x0); /* not found */
+        const auto fire_mouse_hover_leave = rebase<fire_hover_t>(0x0); /* not found */
         const auto fire_proximity_prompt = rebase<fireproximityprompt_t>(0x266f870);
         const auto fire_touch_interest = rebase<firetouchinterest_t>(0x2a806c0);
     };
